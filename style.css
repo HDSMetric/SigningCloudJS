@@ -1,0 +1,586 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Dosis;
+  
+}
+
+
+.sidebar{
+    position: fixed;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    padding: 70px 0 0 10px;
+    border-right: 1px solid #d3d3d3 ;
+}
+
+.sidebar-left{
+    position: sticky;
+    top:0;
+    height: calc(100vh - 70px);
+}
+
+.hero {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(195, 251, 255, 0.199),rgba(0, 0, 0, 0.650)), url(campus.jpg);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+ 
+}
+
+/*Display specific "page" (divs) based on user authentication status - Not required atm*/
+/* .loginPage{
+    display: none;
+}*/ 
+.loginTestPage{
+    display: none;
+    
+} 
+
+.form-box{
+    width: 250px;
+    height: 392px;
+    
+    position: relative;
+    left: -45px;
+    margin: 50px 255px;
+    background: rgb(255, 255, 255);
+    
+    /*Hides page on button toggle*/
+    overflow: hidden;
+
+}
+
+
+/*Does forget password block fade in animation*/
+.forgetpwContainer{
+    
+    width: 450px;
+    height: 500px;
+    outline-style:auto;
+    outline-color: rgb(192, 192, 192);
+    outline-width:thin;
+    position: relative;
+    left: 75px;
+    margin: 45px 255px;
+    background: rgba(255, 248, 248, 0.538);
+    animation: forgetpwContainerAnim 2s;
+}
+
+.registrationContainer{
+    width: 600px;
+    height: 900px;
+    outline-style:auto;
+    outline-color: rgb(192, 192, 192);
+    outline-width:thin;
+    position: relative;
+    left: 30px;
+    margin: 45px 255px;
+    background: rgba(255, 248, 248, 0.538);
+    animation: forgetpwContainerAnim 2s;
+
+}
+
+.verifyContainer{
+    width: 450px;
+    height: 350px;
+    outline-style:auto;
+    outline-color: rgb(192, 192, 192);
+    outline-width:thin;
+    position: relative;
+    left: 75px;
+    margin: 45px 255px;
+    background: rgba(255, 248, 248, 0.538);
+    animation: forgetpwContainerAnim 2s;
+}
+
+.pdfContainer{
+    width: 595px;
+    height: 842px;
+    outline-style:auto;
+    outline-color: rgb(192, 192, 192);
+    outline-width:thin;
+    position: relative;
+    left: 35px;
+    margin: 45px 255px;
+    background: rgba(255, 248, 248, 0.538);
+    animation: forgetpwContainerAnim 2s;
+
+}
+
+@keyframes forgetpwContainerAnim{
+    from {
+        opacity: 0;
+    }
+    
+    to {
+        opacity: 1;
+    }
+}
+
+.headerContainer{
+    width: 100%;
+    height: 33;
+    background:rgba(159, 253, 255, 0.745);
+    left: 25px;
+    font-size: 24px;
+    
+}
+.button-box{
+    width: 195px;
+    margin: 55px auto;
+    position: relative;
+    box-shadow: 0 0 5px 5px #f7f9fac2;
+    border-radius: 30px;
+    top: 45px;
+    left: 8px;
+}
+
+.toggle-btn{
+    padding: 10px 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+    
+
+}
+
+.btn-primary{
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0px;
+  font-family: Arial;
+  color: #221a1a;
+  font-size: 8px;
+  background: #b8b8b8;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  position: relative;
+  top: 55px;
+  left:  245px;
+    
+}
+
+.btn-primary2{
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    font-family: Arial;
+    color: #000000;
+    font-size: 8px;
+    background: #b8b8b8;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    position: relative;
+    top: 75px;
+    left: 245px;
+      
+  }
+
+.btn-primary:hover, .btn-primary2:hover{
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+
+
+
+#btn{
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 110px;
+    height: 100%;
+    background:rgb(158, 227, 255);
+    border-radius: 20px;
+    transition: .5s;
+
+}
+
+  /* text field on press change border color */
+input[type=text]:focus{
+    outline: 2px solid rgb(158, 227, 255);    
+  }
+
+input[type=password]:focus{
+    outline: 2px solid rgb(158, 227, 255);    
+}
+
+.input-group{
+    top: 150px;
+    position: absolute;
+    left: 30px;
+    width: 200px;
+    transition: .5s;
+}
+
+.input-group2{
+    top: 160px;
+    position: absolute;
+   
+    width: 450px;
+    transition: .5s;
+}
+
+.input-group3{
+    top: 190px;
+    position: absolute;
+    left: 10px;
+    width: 450px;
+    transition: .5s;
+}
+
+.studentImg{
+    width: 426px;
+    margin-left: 120px;
+    position: relative;
+    top: -442px;
+    right: -340px;
+    display: block;
+}
+
+.input-field{
+    width: 100%;
+    padding: 5px 0;
+    margin: 5px 0;
+    border-width: 1;
+    border-color: rgb(0, 160, 253);
+    position:relative;
+    left: 7px;
+  
+    
+}
+.input-field2{
+    width: 400px;
+    height: 55px;
+    padding: 5px 0;
+    margin: 5px 0;
+    border-width: 1;
+    border-color: rgb(0, 160, 253);
+    position:relative;
+    top: -75px;
+    left: 25px;
+  
+    
+}
+
+.input-field3{
+    width: 400px;
+    height: 55px;
+    padding: 5px 0;
+    margin: 5px 0;
+    position:relative;
+    left: 85px;
+}
+
+.submit-btn{
+    width: 200px;
+    padding: 5px 15px;
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: rgba(158, 228, 255, 0.158);
+
+    /*Color of spinning loader; uses border outline*/
+    border: 2px solid rgb(191, 255, 246);
+    outline: none;
+    border-radius: 30px;
+    
+    transition: all ease 0.5s;
+}
+
+
+.submit-btn2{
+    width: 200px;
+    padding: 15px 15px;
+    position: absolute;
+    top: 125px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: rgba(158, 228, 255, 0.158);
+
+    /*Color of spinning loader; uses border outline*/
+    border: 2px solid rgb(191, 255, 246);
+    outline: none;
+    border-radius: 30px;
+    
+    transition: all ease 0.5s;
+}
+
+.submit-btn3{
+    width: 200px;
+    padding: 5px 15px;
+    top: 180px;
+    left: 125px;
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: rgba(158, 228, 255, 0.158);
+
+    /*Color of spinning loader; uses border outline*/
+    border: 2px solid rgb(191, 255, 246);
+    outline: none;
+   
+    
+  
+}
+
+.submit-btn4{
+    width: 200px;
+    height: 50px;
+    padding: 5px 15px;
+    top: 550px;
+    left: 180px;
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: rgba(158, 228, 255, 0.158);
+
+    /*Color of spinning loader; uses border outline*/
+    border: 2px solid rgb(191, 255, 246);
+    outline: none;
+}
+
+.submit-btn5{
+    width: 200px;
+    height: 50px;
+    padding: 5px 15px;
+    top: 620px;
+    left: 180px;
+    position: absolute;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: rgba(158, 228, 255, 0.158);
+
+    /*Color of spinning loader; uses border outline*/
+    border: 2px solid rgb(191, 255, 246);
+    outline: none;
+}
+
+.verify-btn{
+    width: 350px;
+    height: 55px;
+    padding: 5px 0;
+    margin: 5px 0;
+    position:relative;
+    left: 50px;
+    top: 170px;
+}
+
+h1{
+    font-size: 16px;
+    padding: 5px 0;
+    position: relative;
+    left: 167px;
+    top: -85px;
+    text-align: justify;
+}
+
+p{
+    width: 280px;
+    font-size: 16px;
+    padding: 5px 0;
+    position: relative;
+    left: 89px;
+    top: -85px;
+    text-align: center;
+}
+
+h2{
+    width: 180px;
+    position:relative;
+    left: 160px;
+}
+
+p1{
+    position: relative;
+    left: 85px;
+}
+
+p2{
+    position: relative;
+    left:405px;
+    top: 120px;
+    font-size: 25px;
+}
+
+/*Anchor tag in contact.html*/
+.return-login{
+    position: relative;
+    color: grey;
+    top: 25px;
+    text-decoration: none;
+    width: 200px;
+    padding: 25px 179px;
+    background-color:rgba(243, 243, 243, 0.758)
+}
+
+a:hover{
+    background-color: rgba(221, 250, 255, 0.607);
+}
+
+.forgetPw{
+    font-size: 12;
+    position: relative;
+    top: 38px;
+    left: 30px;
+}
+
+.active{
+    font-size: 0;
+    width: 50px;
+    height: 50px;
+    
+    border-radius: 50%;
+    border-left-color: transparent;
+    animation: rotate 1.2s ease 0.5s infinite;
+    position: relative;
+    top: -7;
+    
+
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(360deg);
+    }
+}
+
+.success{
+    position: relative;
+    background-color: rgb(82, 255, 77);
+    border: 2px solid rgb(82, 255, 77);
+    animation: bounce .3s ease-in;
+}
+
+@keyframes bounce{
+    0%{
+        transform: scale(0.9);
+    }
+}
+
+.success::before{
+    content: "";
+    position: absolute;
+    background: url(check-solid.svg) no-repeat; /*Check Solid is fontawesome icon*/
+  
+    left: 0;
+    right: 0;
+    margin: 9 auto;
+    width: 20px;
+    height: 20px;
+    line-height: 31px;
+    top:4px;
+}
+
+.fail{
+    position: relative;
+    background-color: rgb(155, 35, 35);
+    border: 2px solid rgb(155, 35, 35);
+    animation: bounce .3s ease-in;
+}
+
+@keyframes bounce{
+    0%{
+        transform: scale(0.9);
+    }
+}
+
+.fail::before{
+    content: "";
+    position: absolute;
+    background: url(close.svg) no-repeat; /*Check Solid is fontawesome icon*/
+  
+    left: 5;
+    right: 0;
+    margin: 9 auto;
+    width: 20px;
+    height: 20px;
+    line-height: 31px;
+    top:4px;
+}
+
+.check-box{
+    margin: 30px 10px 30px 0;
+    position: relative;
+    left: 12px;
+    top: 2px;
+}
+
+span{
+    color:rgb(32, 32, 32);
+    font-size: 12px;
+    position: relative;
+    left: 35px;
+
+}
+
+
+
+#signInIcon{
+    position: relative;
+    top: 28px;
+    left: -18px;
+    color: rgb(0, 174, 255)
+}
+
+#signInIcon2{
+  
+    position: relative;
+    top: -105px;
+    left: 175px;
+    color: rgb(183, 183, 183);
+    
+    /*Create circle border around icon*/
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #888;
+    padding: 0.5em 0.6em;
+
+}
+
+#signInPassIcon{
+    position: relative;
+    top: -57px;
+    left: 185px;
+    color:rgb(154, 152, 163);
+}
+
+#signInPassIcon2{
+    position: relative;
+    top: -25px;
+    left: 185px;
+    color:rgb(154, 152, 163);
+}
+
+#login{
+    
+
+}
+
+#register{
+    left: 1300px;
+}
+
+#footer{
+    background-color:rgba(246, 246, 246, 0.703);
+    position: relative;
+    height: 75px;
+    top: 25px;
+}
+

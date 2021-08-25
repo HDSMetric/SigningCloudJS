@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <nav class="navbar navbar-dark bg-dark" style="height:50px">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="position:relative; top:-5px;">
+                    <img src="icon.png" alt="" width="35" height="35">
+                    SigningCloud
+                </a>
+            </div>   
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 bg-light d-none d-md-block sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#">Active</a>
+                        </li>
+                        <li class="nav-item" >
+                          <a class="nav-link" href="#">
+                            <i class="bi bi-vector-pen" style="font-size: 1rem; color: cornflowerblue;"></i>
+                              Sign File
+                          </a>
+                        </li>
+                      </ul>
+                    
+                </div>
+
+            </div>
+        </div>
+    </header>
+<body>
+<div class = "registrationContainer" style="height: 300px;"> 
+<h2 style="position:relative; left:225px; top: 25px; width: 350px;">SigningCloud API</h2>
+ 
+<label class="btn-primary">
+<i class="fa fa-image"></i> UPLOAD SIGNATURE <input type="file" id="uploadSig" style="display: none;">
+</label>
+<br>
+<label class="btn-primary2">
+<i class="fa fa-image"></i> UPLOAD DOCUMENT <input type="file" id="uploadFile" style="display: none;" >
+</label>
+<br>
+
+
+  <input type='button' onclick='sign()' id="signFile"  class="submit-btn4" style="position:relative; left:0px; top: 115px;" value='Auto Sign Document'>
+
+</div>
+
+<div class="popup" id="popup-1" style="display: none; position: relative; top: -250px; left: 400px; width: 350px; height: 180px; border-radius: 12px; background-color: rgb(191, 229, 241);" >
+    <div class="overlay"></div>
+    <div class="content">
+     
+      <div id="load" style="position: relative; left: 100px; top: 85px" >
+        UPLOADING FILE...
+        <img src="https://s.svgbox.net/loaders.svg?fill=maroon&ic=tail-spin" 
+             style="width:60px; position: relative; left: -100px; top: -35px;">
+      </div>
+      
+
+    </div>
+</div>
+
+<div class="popup" id="popup-2" style="display: none; position: relative; top: -250px; left: 400px; width: 350px; height: 180px; border-radius: 12px; background-color: rgb(191, 229, 241);" >
+    <div class="overlay"></div>
+    <div class="content">
+     
+      <div id="load" style="position: relative; left: 90px; top: 85px" >
+        GENERATING SIGNED FILE...
+        <img src="https://s.svgbox.net/loaders.svg?fill=maroon&ic=tail-spin" 
+             style="width:60px; position: relative; left: -115px; top: -35px;">
+      </div>
+      
+
+    </div>
+</div>
+
+<link rel = "stylesheet" href = "style.css">
+<script src = "form.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.0/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+<script>
+    var apikey;
+    var secret;
+    var parsedKey;
+    var secret = '58AAAA524566DF7057729DEA691F56FFC52ED4A6';
+    var parsedKey = CryptoJS.SHA256(secret);
+    var encrypted_global;
+    var contractnum_global; 
+    var pdfdata_global;
+    var filehash_global;
+    var fileHash;
+
+
+//Auto fetch access token on page load
+fetch('https://demo.securemetric.com/signserver/v1/accesstoken?client_id=8D36E00DC7916E792839&state=mig')
+.then(function(response) {
+    return response.json();
+})
+.then(function(accessToken) {
+    //tempData contains data value for decryption
+    tempData = accessToken.data;
+  
+    console.log("%cAccess Token Json Encrypted in Data Field","font-size: 16px");
+
+    //Json response 
+    console.log(accessToken)
+    
+    
+}).then(()=>{
+
+var key = '4de3d6f46308252f938a23804f3c4b55df95604d3c54d8011ac52263d948f0ac';
+// used to compare hmac with mac (integrity)
+var secret = '58AAAA524566DF7057729DEA691F56FFC52ED4A6';
+
+// parse Json data into Hex and base64 to WordArray
+var _data = CryptoJS.enc.Hex.parse(tempData);
+var base64_data = _data.toString(CryptoJS.enc.Base64);
+var _key = CryptoJS.enc.Hex.parse(key);
+
+//Check if there is any tampering (Integrity checking)
+var hmac = CryptoJS.SHA256(tempData + secret);
+console.log("%cThis value can be used for Integrity checking/Tampering","font-size: 16px");
+console.log("mac verification = " + hmac);
+
+//Decrypt the Json data: "..." response with API key
+encrypted_data = CryptoJS.AES.decrypt(
+    base64_data, // pass base64
+    _key,  // pass WordArray
+    {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+    })
+
+    console.log("%cThis is the decrypted data field ","font-size: 16px");
+
+//Decrypted value printed
+console.log(encrypted_data.toString(CryptoJS.enc.Utf8));
+
+//Store decrypted value to access the access token
+encrypted_global = encrypted_data;
+
+}).then(()=>{
+
+    //UPLOAD THE SIGNATURE HERE
+    const upfurl = "https://demo.securemetric.com/signserver/v1/user/signimg";
+    // select file input
+    const input = document.getElementById('uploadSig');
+
+    // add event listener
+    input.addEventListener('input', event => {
+        $("#popup-1").show();
+        uploadFile(event);
+        
+    });
+const uploadFile = event => {
+    
+    const files = event.target.files
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onloadend = (function(theFile) {
+    return function(e) {
+        var arrayBuffer = e.target.result;
+
+        //SHA256 of uploaded document (Value in hex string)
+        var fileHash = arrayBufferToWordArray(arrayBuffer).toString();
+    
+        //Create access token variable
+        var encrypted = encrypted_global;
+        let decrypted_data = JSON.parse(encrypted.toString(CryptoJS.enc.Utf8));
+        var token = decrypted_data.at;
+
+        var encryptedData = null;
+
+        //Create Json body "Request Raw Data" for file upload
+        var test = JSON.stringify({
+            "img":fileHash,
+            "signer":
+            {
+            "idcardnum":"970405145555",
+            "phonesn":"0162280888",
+            "email":"miguel.lim@securemetric.com",
+            "name":"Miguel",
+            "type":"0"
+            }
+        })
+  
+
+        //Encrypt the Request Raw Data with SHA256 secret key
+        var encryptedData = CryptoJS.AES.encrypt(test, parsedKey, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+        });
+      
+        var mac = CryptoJS.SHA256(encryptedData.ciphertext + secret);
+
+        // add file to FormData object
+        const fd = new FormData();
+        fd.append('uploadFile', files[0]);
+        fd.append('data',encryptedData.ciphertext);
+        fd.append('accesstoken',token);
+        fd.append('mac',mac);
+    
+        // send `POST` request
+        fetch(upfurl, {
+            method: 'POST',
+            body: fd
+        })
+        .then(res => res.json())
+        .then(json => {
+            console.log("%cSuccess response after uploading signature","font-size: 16px");
+
+            console.log(json);   //print data to console
+            $("#popup-1").hide();
+            $("#signFile").show();
+        })
+        .catch(err => console.error(err));
+  };
+})(f)
+
+    reader.onerror = function(e) {
+        console.error(e);
+    };
+
+// Read in the image file as a data URL.
+    reader.readAsArrayBuffer(f);  
+    }
+}
+
+}).then(()=>{
+    //UPLOAD THE FILE HERE
+    const upfurl = "https://demo.securemetric.com/signserver/v1/contract/file";
+    // select file input
+    const input = document.getElementById('uploadFile');
+
+    // add event listener
+    input.addEventListener('input', event => {
+        $("#popup-1").show();
+        uploadFile(event);
+        
+    });
+        const uploadFile = event => {
+    
+    const files = event.target.files
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onloadend = (function(theFile) {
+    return function(e) {
+        var arrayBuffer = e.target.result;
+
+        //SHA256 of uploaded document (Value in hex string)
+        var fileHash = CryptoJS.SHA256(arrayBufferToWordArray(arrayBuffer)).toString();
+    
+        //Create access token variable
+        var encrypted = encrypted_global;
+        let decrypted_data = JSON.parse(encrypted.toString(CryptoJS.enc.Utf8));
+        var token = decrypted_data.at;
+
+        var encryptedData = null;
+        //var raw = document.getElementById("raw").value;
+
+        //Create Json body "Request Raw Data" for file upload
+        var test = JSON.stringify({
+        "uploadFileHash":fileHash,
+        "type":"pdf",
+        "contractInfo": {
+                "contractnum":"",
+                "isWatermark":false,
+                "signernum":1,
+                "signerinfo": [
+                        {
+                                "name":"Miguel",
+                                "phonesn":"0162280888",
+                                "authtype":0,
+                                "email":"miguel.lim@securemetric.com",
+                                "caprovide":1
+                        },
+                ]
+        }
+        })
+
+        //Encrypt the Request Raw Data with SHA256 secret key
+        var encryptedData = CryptoJS.AES.encrypt(test, parsedKey, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+        });
+
+        var mac = CryptoJS.SHA256(encryptedData.ciphertext + secret);
+
+        // add file to FormData object
+        const fd = new FormData();
+        fd.append('uploadFile', files[0]);
+        fd.append('data',encryptedData.ciphertext);
+        fd.append('accesstoken',token);
+        fd.append('mac',mac);
+    
+        // send `POST` request
+        fetch(upfurl, {
+            method: 'POST',
+            body: fd
+        })
+        .then(res => res.json())
+        .then(json => {
+            console.log("%cContract Number Json Encrypted in Data Field","font-size: 16px");
+
+            console.log(json);   //print data to console
+            decrypt(json.data)
+            $("#popup-1").hide();
+            $("#signFile").show();
+        })
+        .catch(err => console.error(err));
+  };
+})(f)
+
+
+reader.onerror = function(e) {
+  console.error(e);
+};
+
+// Read in the image file as a data URL.
+reader.readAsArrayBuffer(f);  
+    }
+}
+})
+
+//Sign uploaded file
+function sign(){
+
+var encrypted = encrypted_global;
+let decrypted_data = JSON.parse(encrypted.toString(CryptoJS.enc.Utf8)); 
+var token = decrypted_data.at;
+
+var encryptedData = null;
+//var sign_raw = document.getElementById("signRaw").value;
+var sign_raw = JSON.stringify({
+"signerInfo": {
+    "idcardnum":"970405145555",
+    "phonesn":"0162280888",
+    "name":"Miguel",
+    "email":"miguel.lim@securemetric.com",
+    "type":"0",
+    "verifycode":"" ,
+    "signkeyword":"cfsign", 
+    "sealkeyword":""
+},
+"contractnum":contractnum_global,
+"callUrl":"",
+})
+
+//console.log( "raw = " + raw );
+//console.log("secret: " + secret);
+//console.log("HASHED Secret key: " + parsedKey1);
+
+encryptedData = CryptoJS.AES.encrypt(sign_raw, parsedKey, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+});
+//console.log( "data = " + encryptedData.ciphertext );
+
+var mac = CryptoJS.SHA256(encryptedData.ciphertext + secret);
+//console.log( "mac = " + mac );
+
+$("#popup-2").show()
+
+
+//console.log("accesstoken = " + token);
+const upfurl = "https://demo.securemetric.com/signserver/v1/contract/signature/automatic";
+const fd = new FormData();
+fd.append('data',encryptedData.ciphertext);
+fd.append('accesstoken',token);
+fd.append('mac',mac);
+
+// send `POST` request
+fetch(upfurl, {
+    
+    method: 'POST',
+    body: fd
+})
+.then(res => res.json())
+.then(json => {
+    console.log(json);   //print data to console
+   
+})
+.catch(err => console.error(err)).then(() => {
+        var encrypted = encrypted_global;
+let decrypted_data = JSON.parse(encrypted.toString(CryptoJS.enc.Utf8));
+var token = decrypted_data.at;
+var encryptedData = null;
+//var download_raw = document.getElementById("downloadRaw").value;
+var download_raw = JSON.stringify({ 
+"contractnum":contractnum_global
+})
+//console.log( "raw = " + raw );
+//console.log("secret: " + secret);
+//console.log("HASHED Secret key: " + parsedKey1);
+
+encryptedData = CryptoJS.AES.encrypt(download_raw, parsedKey, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+});
+//console.log( "data = " + encryptedData.ciphertext );
+
+var mac = CryptoJS.SHA256(encryptedData.ciphertext + secret);
+//console.log( "mac = " + mac );
+
+//console.log("accesstoken = " + token);
+const upfurl = "https://demo.securemetric.com/signserver/v1/contract/file?data="+encryptedData.ciphertext+'&accesstoken='+token+'&mac='+mac;
+const fd = new FormData();
+fd.append('data',encryptedData.ciphertext);
+fd.append('accesstoken',token);
+fd.append('mac',mac);
+
+// send `POST` request
+fetch(upfurl)
+.then(res => res.json())
+.then(json => {
+    console.log("%cThis contains hex value of Signed PDF file for new window","font-size: 16px");
+
+    console.log(json);   //print data to console
+    decrypt(json.data)
+  
+
+    var data = hexToBase64(pdfdata_global);
+
+
+    //to open up in the new window**
+    var byteCharacters = atob(data);
+    var byteNumbers = new Array(byteCharacters.length);
+    for (var i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    var byteArray = new Uint8Array(byteNumbers);
+    var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+    var fileURL = URL.createObjectURL(file);
+    $("#popup-2").hide();
+    window.open(fileURL);
+    
+})
+.catch(err => console.error(err));
+
+});
+}
+
+//Conversion to display signed/downloaded pdf in new window after signing process done
+function hexToBase64(hexstring) {
+return btoa(hexstring.match(/\w{2}/g).map(function(a) {
+    return String.fromCharCode(parseInt(a, 16));
+}).join(""));
+}
+
+//Decrypt data in json response
+function decrypt(data){
+
+
+    mac = data.mac;
+    //console.log(data)
+    
+    var key = '4de3d6f46308252f938a23804f3c4b55df95604d3c54d8011ac52263d948f0ac';
+           var _data = CryptoJS.enc.Hex.parse(data);
+    var base64_data = _data.toString(CryptoJS.enc.Base64);
+           // transfer Hex to WordArray
+    var _key = CryptoJS.enc.Hex.parse(key);
+    
+  
+
+    encrypted_val = CryptoJS.AES.decrypt(
+        base64_data, // pass base64
+        _key,  // pass WordArray
+        {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+        })
+    //console.log(encrypted_val.toString(CryptoJS.enc.Utf8));
+    //Dynamically change contract num based on pdf input
+    var json = JSON.parse(encrypted_val.toString(CryptoJS.enc.Utf8));
+    contractnum_global = json.contractnum;
+    pdfdata_global = json.pdfdata;
+    //console.log(pdfdata_global)
+  
+}
+
+//SHA256 of uploaded document (Value in hex string)
+function arrayBufferToWordArray(ab) {
+var i8a = new Uint8Array(ab);
+var a = [];
+for (var i = 0; i < i8a.length; i += 4) {
+a.push(i8a[i] << 24 | i8a[i + 1] << 16 | i8a[i + 2] << 8 | i8a[i + 3]);
+}
+return CryptoJS.lib.WordArray.create(a, i8a.length);
+}
+
+</script>
+
